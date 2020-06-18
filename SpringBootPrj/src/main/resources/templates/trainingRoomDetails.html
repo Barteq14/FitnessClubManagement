@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <div th:replace="shared/header :: header-css"/>
+    <title>Strona domowa</title>
+</head>
+<body>
+<div th:replace="shared/header :: header('home')"/>
+
+<div id="main" class="container">
+    <H1>Dane pojazdu</H1>
+    Id: <b th:text="${trainingRoom.id}"></b><br/>
+    Nazwa: <b th:text="${trainingRoom.name}"></b><br/>
+    Liczba dostepnych miejsc: <b>[[${#numbers.formatDecimal(trainingRoom.number_of_places,3,2,'COMMA')}]]</b><br/>
+    Typ sali: <b>[[${trainingRoom.trainingRoomType.name}]]</b><br/>
+    Wyposażenie sali:
+    <span th:if="${trainingRoom.accessories.isEmpty()}">Brak</span>
+
+    <span th:unless="${trainingRoom.accessories.isEmpty()}">
+        <ul>
+            <li th:each="acc : ${trainingRoom.accessories}" th:text="${acc.name}"/>
+        </ul>
+    </span>
+    <br/>
+    <a class="btn btn-success" href="/trainingRoomList.html">Wstecz</a>
+</div>
+<div th:replace="shared/footer :: footer"></div>
+</body>
+</html>

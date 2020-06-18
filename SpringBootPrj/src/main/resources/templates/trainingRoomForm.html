@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="shared/header :: header-css"/>
+    <title>Rejestracja</title>
+</head>
+<body>
+<div th:replace="shared/header :: header('home')"/>
+
+<div class="card-body container">
+    <form th:method="POST" th:object="${trainingRoom}" th:action="@{/trainingRoomForm.html}">
+        <fieldset>
+            <h1>Dodawanie/Edycja</h1>
+
+            <div class="form-group">
+                <label for="name" class="bmd-label-floating">Nazwa:</label>
+                <input id="name" type="text" name="name" th:value="*{name}"
+                       class="form-control" th:classappend="${#fields.hasErrors('name')}?'is-invalid'"
+                       required="true" autofocus="true"/>
+
+                <div class="error text-danger" th:if="${#fields.hasErrors('name')}">
+                    <span th:each="err : ${#fields.errors('name')}" th:text="${err}"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="number_of_places" class="bmd-label-floating">Ilosc Miejsc:</label>
+                <input id="number_of_places" type="text" th:field="*{number_of_places}"
+                       class="form-control" th:classappend="${#fields.hasErrors('number_of_places')}?'is-invalid'"
+                       required="true"/>
+                <div class="error text-danger" th:if="${#fields.hasErrors('number_of_places')}">
+                    <p th:each="err : ${#fields.errors('number_of_places')}" th:text="${err}"></p>
+                </div>
+            </div>
+
+
+
+            <div class="form-group">
+                <select th:field="*{trainingRoomType.id}" class="form-control"
+                        th:classappend="${#fields.hasErrors('trainingRoomType.id')}?'is-invalid'">
+                    <option value="-1">--wybierz typ sali--</option>
+                    <option th:each="type : ${trainingRoomTypes}"
+                            th:value="${type.id}"
+                            th:text=" ${type.name}"
+                    />
+                </select>
+                <div class="error text-danger" th:if="${#fields.hasErrors('trainingRoomType.id')}">
+                    <p th:each="err : ${#fields.errors('trainingRoomType.id')}" th:text="${err}"></p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div th:each="acc : ${accessoryList}" class='checkbox' style="left:25px;">
+                    <input th:id="${acc}" type="checkbox" th:field="*{accessories}"
+                           th:value="${acc.id}"/>
+                    <label th:text="${acc.name}" th:for="${acc}"></label>
+                </div>
+
+                <div class="error text-danger" th:if="${#fields.hasErrors('accessories')}">
+                    <p th:each="err : ${#fields.errors('accessories')}" th:text="${err}"></p>
+                </div>
+            </div>
+
+
+            <button type="submit" class="btn btn-primary btn-raised">Zapisz</button>
+        </fieldset>
+    </form>
+</div>
+<div th:replace="shared/footer :: footer"></div>
+</body>
+</html>
